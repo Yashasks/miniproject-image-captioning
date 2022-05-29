@@ -24,7 +24,7 @@ xception_model = Xception(include_top=False, pooling="avg")
 def extract_features(filename, model):
         try:
             image = Image.open(filename)
-            
+
         except:
             print("ERROR: Couldn't open image! Make sure the image path and extension is correct")
         image = image.resize((299,299))
@@ -70,27 +70,28 @@ def about():
 
 @app.route('/', methods=['POST'])
 def predict():
+    if request.method=='POST':
+        imagefile=request.files["imagefile"]
+        imagepath="./static/images/"+imagefile.filename
+        imagefile.save(imagepath)
 
-    imagefile=request.files["imagefile"]
-    imagepath="./images/"+imagefile.filename
-    imagefile.save(imagepath)
 
+        photo = extract_features(imagepath, xception_model)
+        img = Image.open(imagepath)
 
-    photo = extract_features(imagepath, xception_model)
-    img = Image.open(imagepath)
+        description = generate_desc(model, tokenizer, photo, max_length)
+        caption = ""
 
-    description = generate_desc(model, tokenizer, photo, max_length)
-    caption = ""
+        caption = description[5:len(description)-3]
 
-    caption = description[5:len(description)-3]
+        caption_generated='%s' % (caption)
 
-    caption_generated='%s' % (caption)
-
-    return render_template('index.html', prediction=caption_generated)
-
+        return render_template('index.html', prediction=caption_generated, selected_image=imagepath)
+    return None
 
 if __name__ == '__main__':
     app.run(port=1234, debug=True)
+
 
     
 # print("\n\n")

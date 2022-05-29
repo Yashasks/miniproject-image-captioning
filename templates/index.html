@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+        .center{
+            display:block;
+            margin-top:0px;
+            margin-left:auto;
+            margin-right: auto;
+            width:224px;
+            height:224px;
+            border: 10px solid rgb(48, 47, 47);
+        };
+    </style>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Start your development with Ollie landing page.">
@@ -51,18 +62,25 @@
 
     <header id="home" class="header">
         <br><br><br><h1><center>Image Caption Generator</center></h1>
-        <br><br><br><br>
-        <container style="padding-left: 30px;"><label for="caption">Select a picture </label>
-            <form action="/", method="post" enctype="multipart/form-data">
-                <input type="file" name="imagefile">
-                <br/>
-                <br/>
-                <input type="submit" name="Generate Caption">
-            </form>
-            <br/>
-            <br/>
+        
+        <container ><label for="caption">Select a picture </label>
+            
+                <form action="/", method="post" enctype="multipart/form-data">
+                    <input type="file" name="imagefile">
+                    <br/>
+                    <br/>
+                    <input type="submit" name="Generate Caption">
+                </form>
+            
+            <!-- <br/>
+            <br/> -->
+            <!-- {% if prediction %}
+            
+            {% endif %} -->
             {% if prediction %}
-                <h2>I think, {{prediction}}.</h2>
+                <img class="center" src=" {{ selected_image }} " alt = "Selected Image">
+                <br/>
+                <h2 style="text-align: center;">I think, {{prediction}}.</h2>
             {% endif %}
         </container>
     </header>
